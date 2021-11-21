@@ -5,8 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParkingLotSystemTest {
     ParkingLotSystem parkingLotSystem = null;
@@ -20,21 +19,34 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenAVehicle_WhenParked_ShouldReturnTrue() {
-       boolean isParked = parkingLotSystem.park(new Object());
-       assertTrue(isParked);
+        try {
+            parkingLotSystem.park(vehicle);
+           boolean isParked =  parkingLotSystem.isVehicleParked(vehicle);
+            assertTrue(isParked);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void givenVehicle_WhenAlreadyParked_ShouldReturnFalse() {
-        parkingLotSystem.park(vehicle);
-        boolean isParked = parkingLotSystem.park(new Object());
-        assertFalse(isParked);
+        try {
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(new Object());
+        } catch (ParkingLotException e) {
+             assertEquals("Parking Lot is Full!", e.getMessage());
+        }
     }
 
     @Test
     public void givenAVehicle_WhenUnParked_ShouldReturnTrue() {
-        parkingLotSystem.park(vehicle);
-        boolean isUnParked = parkingLotSystem.unPark(vehicle);
-        assertTrue(isUnParked);
+        try {
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.unPark(vehicle);
+            boolean isUnParked =  parkingLotSystem.isVehicleUnParked(vehicle);
+            assertTrue(isUnParked);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
     }
 }

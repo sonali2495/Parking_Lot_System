@@ -10,11 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ParkingLotSystemTest {
     ParkingLotSystem parkingLotSystem = null;
     Object vehicle = null;
+    private final int capacity = 1;
 
     @BeforeEach
     public void setUp() throws Exception {
         vehicle = new Object();
-        parkingLotSystem = new ParkingLotSystem();
+        parkingLotSystem = new ParkingLotSystem(capacity);
     }
 
     @Test
@@ -29,7 +30,7 @@ public class ParkingLotSystemTest {
     }
 
     @Test
-    public void givenVehicle_WhenAlreadyParked_ShouldReturnFalse() {
+    public void givenVehicle_WhenAlreadyParked_ShouldReturnException() {
         try {
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(new Object());
@@ -39,13 +40,25 @@ public class ParkingLotSystemTest {
     }
 
     @Test
-    public void givenAVehicle_WhenUnParked_ShouldReturnTrue() {
+    public void givenAVehicle_WhenUnParked_ShouldReturnException() {
         try {
             parkingLotSystem.park(vehicle);
             parkingLotSystem.unPark(vehicle);
             boolean isUnParked =  parkingLotSystem.isVehicleUnParked(vehicle);
             assertTrue(isUnParked);
         } catch (ParkingLotException e) {
+            assertEquals("No Such Vehicle found", e.getMessage());
+        }
+    }
+
+    @Test
+    public void givenWhenParkingLotIsFull_ShouldInformTheOwner() {
+        ParkingLotOwner owner = new ParkingLotOwner();
+        parkingLotSystem.registerSystem(owner);
+        try {
+            parkingLotSystem.park(vehicle);
+        } catch (ParkingLotException e) {
+            assertEquals("Parking Lot is Full!", e.getMessage());
             e.printStackTrace();
         }
     }

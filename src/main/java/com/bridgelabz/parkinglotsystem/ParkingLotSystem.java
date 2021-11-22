@@ -1,20 +1,26 @@
 package com.bridgelabz.parkinglotsystem;
 
 public class ParkingLotSystem {
+    private final int actualCapacity;
+    private int currentCapacity;
     private Object vehicle;
+    private ParkingLotOwner owner;
 
-    public ParkingLotSystem() {
+    public ParkingLotSystem(int capacity) {
+        this.currentCapacity = 0;
+        this.actualCapacity = capacity;
     }
 
     /**
      * Purpose To Park Given Vehicle
      *
      * @param vehicle given vehicle as parameter
-     * @return True For Vehicle Parked
+     * @return True if Vehicle Parked
      */
     public void park (Object vehicle) throws ParkingLotException {
-        if(this.vehicle != null)
+        if(this.currentCapacity == this.actualCapacity)
             throw new ParkingLotException("Parking Lot is Full!");
+        this.currentCapacity++;
         this.vehicle = vehicle;
     }
 
@@ -23,13 +29,11 @@ public class ParkingLotSystem {
      * @param vehicle
      * @return True for vehicle unparked
      */
-    public boolean unPark(Object vehicle) {
-        if (this.vehicle == null) return false;
+    public void unPark(Object vehicle) throws ParkingLotException{
+        if (this.vehicle == null) throw new ParkingLotException("No Such Vehicle found");
         if(this.vehicle.equals(vehicle)){
             this.vehicle = null;
-            return true;
         }
-        return false;
     }
 
     /**
@@ -52,6 +56,15 @@ public class ParkingLotSystem {
      * @return Vehicle Equal to null -> Vehicle is UnParked and return True
      */
     public boolean isVehicleUnParked(Object vehicle) {
-            return this.vehicle == null;
+        return this.vehicle == null;
+    }
+
+    /**
+     * Purpose To Introduce Parking Lot Owner
+     *
+     * @param owner given Parameter as Owner
+     */
+    public  void registerSystem(ParkingLotOwner owner) {
+        this.owner = owner;
     }
 }

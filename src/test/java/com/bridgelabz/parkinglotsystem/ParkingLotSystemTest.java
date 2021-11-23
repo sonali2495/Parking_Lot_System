@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ParkingLotSystemTest {
     ParkingLotSystem parkingLotSystem = null;
     Object vehicle = null;
-    private final int capacity = 1;
+    private final int capacity = 2;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -25,7 +25,6 @@ public class ParkingLotSystemTest {
            boolean isParked =  parkingLotSystem.isVehicleParked(vehicle);
             assertTrue(isParked);
         } catch (ParkingLotException e) {
-            e.printStackTrace();
         }
     }
 
@@ -55,11 +54,28 @@ public class ParkingLotSystemTest {
     public void givenWhenParkingLotIsFull_ShouldInformTheOwner() {
         ParkingLotOwner owner = new ParkingLotOwner();
         parkingLotSystem.registerSystem(owner);
+        Object vehicle1 = new Object();
         try {
             parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(vehicle1);
+            parkingLotSystem.park(new Object());
         } catch (ParkingLotException e) {
             assertEquals("Parking Lot is Full!", e.getMessage());
-            e.printStackTrace();
         }
+        boolean capacityFull = owner.isCapacityFull();
+        assertTrue(capacityFull);
+    }
+
+    @Test
+    public void givenCapacityIs2_ShouldBeAbleToPark2Vehicles() {
+        Object vehicle2 = new Object();
+        parkingLotSystem.setCapacity(2);
+        try {
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(vehicle2);
+            boolean isParked1 =  parkingLotSystem.isVehicleParked(vehicle);
+            boolean isParked2 =  parkingLotSystem.isVehicleParked(vehicle2);
+            assertTrue(isParked1 && isParked2);
+        } catch (ParkingLotException e) { }
     }
 }

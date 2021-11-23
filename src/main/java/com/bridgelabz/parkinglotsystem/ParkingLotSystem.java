@@ -3,15 +3,21 @@ package com.bridgelabz.parkinglotsystem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Purpose: To Simulate With Parking Lot Problem.
+ *  @author Sonali G
+ *  @version 1.0
+ *  @since 23-11-2021
+ */
 public class ParkingLotSystem {
-    private List vehicles;
-    private final List<ParkingLotObserver> observers;
-    private int actualCapacity;
+    private static List vehicles;
+    private static List<ParkingLotObserver> observers;
+    private static int actualCapacity;
 
-    public ParkingLotSystem(int capacity) {
+    public ParkingLotSystem() {
         this.vehicles = new ArrayList();
         this.observers = new ArrayList<>();
-        this.actualCapacity = capacity;
+        //this.actualCapacity = capacity;
     }
 
     /**
@@ -34,7 +40,7 @@ public class ParkingLotSystem {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
             }
-            //throw new ParkingLotException("Parking Lot is Full!");
+            throw new ParkingLotException("Parking Lot is Full!");
         }
         if(isVehicleParked(vehicle)) throw new ParkingLotException("Vehicle Already Parked!");
         this.vehicles.add(vehicle);

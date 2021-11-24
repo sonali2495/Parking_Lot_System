@@ -35,15 +35,23 @@ public class ParkingLotSystemTest {
     }
 
     @Test
-    public void givenAVehicle_WhenUnParked_ShouldReturnException() {
-        try {
+    public void givenAVehicle_WhenAlreadyParked_ShouldReturnException() throws ParkingLotException {
+        parkingLotSystem.park(vehicle);
+        assertThrows(ParkingLotException.class, () -> parkingLotSystem.park(vehicle));
+    }
+
+    @Test
+    public void givenNullVehicle_WhenUnPark_ShouldReturnException() {
+        vehicle = null;
+       assertThrows(ParkingLotException.class, () -> parkingLotSystem.unPark(vehicle));
+    }
+
+    @Test
+    public void givenAVehicle_WhenUnParked_ShouldReturnTrue() throws ParkingLotException{
             parkingLotSystem.park(vehicle);
             parkingLotSystem.unPark(vehicle);
             boolean isUnParked = parkingLotSystem.isVehicleUnParked(vehicle);
             assertTrue(isUnParked);
-        } catch (ParkingLotException e) {
-            assertEquals("No Such Vehicle found", e.getMessage());
-        }
     }
 
     @Test
@@ -106,5 +114,15 @@ public class ParkingLotSystemTest {
         parkingLotAttendant.parkVehicle(vehicle);
         boolean vehicleParked = parkingLotSystem.isVehicleParked(vehicle);
         assertTrue(vehicleParked);
+    }
+
+    @Test
+    public void givenVehicle_WhenParked_ShouldReturnSlotNo() throws ParkingLotException {
+        parkingLotSystem.setCapacity(2);
+        Object vehicle2 = new Object();
+        parkingLotSystem.park(vehicle);
+        parkingLotSystem.park(vehicle2);
+        int slotNum = parkingLotSystem.searchVehicle(vehicle2);
+        assertEquals(1, slotNum);
     }
 }

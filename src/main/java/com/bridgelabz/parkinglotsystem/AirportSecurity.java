@@ -6,10 +6,9 @@ package com.bridgelabz.parkinglotsystem;
  * @author Sonali G
  * @since 23/11/2021
  */
-public class AirportSecurity implements ParkingLotObserver{
+public class AirportSecurity implements ParkingLotObserver {
 
     private boolean isCapacityFull;
-
 
     @Override
     public void capacityIsFull() {

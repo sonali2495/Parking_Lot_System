@@ -11,7 +11,7 @@ import java.util.List;
  * @since 23-11-2021
  */
 public class ParkingLotSystem {
-    private static List vehicles;
+    private static List<ParkingSlot> vehicles;
     private static List<ParkingLotObserver> observers;
     private static int actualCapacity;
 
@@ -45,7 +45,7 @@ public class ParkingLotSystem {
      * @param vehicle given vehicle as parameter
      * @return True if Vehicle Parked
      */
-    public void park(Object vehicle) throws ParkingLotException {
+    public void park(Object vehicle, String time) throws ParkingLotException {
         if (this.vehicles.size() == this.actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
@@ -53,7 +53,8 @@ public class ParkingLotSystem {
             throw new ParkingLotException("Parking Lot is Full!");
         }
         if (isVehicleParked(vehicle)) throw new ParkingLotException("Vehicle Already Parked!");
-        this.vehicles.add(vehicle);
+        ParkingSlot parkingSlot = new ParkingSlot(vehicle, time);
+        this.vehicles.add(parkingSlot);
     }
 
     /**
@@ -64,12 +65,14 @@ public class ParkingLotSystem {
      */
     public boolean unPark(Object vehicle) throws ParkingLotException {
         if (this.vehicles == null) return false;
-        if (this.vehicles.contains(vehicle)) {
-            this.vehicles.remove(vehicle);
-            for (ParkingLotObserver observer : observers) {
-                observer.capacityIsAvailable();
+        for (ParkingSlot slot : vehicles) {
+            if (slot.getVehicle().equals(vehicle)) {
+                this.vehicles.remove(vehicle);
+                for (ParkingLotObserver observer : observers) {
+                    observer.capacityIsAvailable();
+                }
+                return true;
             }
-            return true;
         }
         throw new ParkingLotException("No Such Vehicle found");
     }
@@ -82,7 +85,11 @@ public class ParkingLotSystem {
      * it will return True
      */
     public boolean isVehicleParked(Object vehicle) {
-        return this.vehicles.contains(vehicle);
+        for (ParkingSlot slot : vehicles) {
+            if (slot.getVehicle().equals(vehicle))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -106,11 +113,24 @@ public class ParkingLotSystem {
      * @throws ParkingLotException If Vehicle Not Found Throwing Exception
      */
     public int searchVehicle(Object vehicle) throws ParkingLotException {
-        Driver driver = new Driver();
-        if (this.vehicles.contains(vehicle)) {
-            int slotNo = vehicles.indexOf(vehicle);
-            driver.vehicleSlotIs(slotNo);
-            return slotNo;
+        for (ParkingSlot slot : vehicles) {
+            if (slot.getVehicle().equals(vehicle))
+                return vehicles.indexOf(slot);
+        }
+        throw new ParkingLotException("No Such Vehicle Found");
+    }
+
+    /**
+     * Purpose: To Get The Parking Time For Parked Vehicle
+     *
+     * @param vehicle given Vehicle as Parameter
+     * @return Vehicle Park Time
+     * @throws ParkingLotException If Vehicle Not Found Throw Exception
+     */
+    public String getParkTime(Object vehicle) throws ParkingLotException {
+        for (ParkingSlot slot : vehicles) {
+            if (slot.getVehicle().equals(vehicle))
+                return slot.getTime();
         }
         throw new ParkingLotException("No Such Vehicle Found");
     }

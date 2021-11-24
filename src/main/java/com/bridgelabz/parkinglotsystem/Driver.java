@@ -8,13 +8,23 @@ package com.bridgelabz.parkinglotsystem;
  * @since 24-11-2021
  */
 public class Driver {
+    public static int slotNo;
+
     /**
-     * Purpose To Return Slot Number
+     * Purpose To Retrieve Slot Number
      *
      * @param slotNo Vehicle Slot Number
-     * @return Vehicle Slot Number
      */
-    public int vehicleSlotIs(int slotNo) {
+    public void vehicleSlotIs(int slotNo) {
+        this.slotNo = slotNo;
+    }
+
+    /**
+     * Purpose: To return slot number
+     *
+     * @return Vehicle slot number
+     */
+    public int showSlot() {
         return slotNo;
     }
 }

@@ -63,7 +63,7 @@ public class ParkingLotSystem {
      * @return True for vehicle unparked
      */
     public boolean unPark(Object vehicle) throws ParkingLotException {
-        if (vehicle == null) throw new ParkingLotException("No Such Vehicle found");
+        if (this.vehicles == null) return false;
         if (this.vehicles.contains(vehicle)) {
             this.vehicles.remove(vehicle);
             for (ParkingLotObserver observer : observers) {
@@ -71,7 +71,7 @@ public class ParkingLotSystem {
             }
             return true;
         }
-        return false;
+        throw new ParkingLotException("No Such Vehicle found");
     }
 
     /**

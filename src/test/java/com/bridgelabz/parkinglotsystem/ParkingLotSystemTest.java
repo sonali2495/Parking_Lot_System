@@ -14,7 +14,6 @@ public class ParkingLotSystemTest {
     ParkingLotOwner owner;
     AirportSecurity airportSecurity;
 
-
     @BeforeEach
     public void setUp() throws Exception {
         vehicle = new Object();
@@ -42,16 +41,16 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenNullVehicle_WhenUnPark_ShouldReturnException() {
-        vehicle = null;
-       assertThrows(ParkingLotException.class, () -> parkingLotSystem.unPark(vehicle));
+      // vehicle = null;
+        assertThrows(ParkingLotException.class, () -> parkingLotSystem.unPark(vehicle));
     }
 
     @Test
-    public void givenAVehicle_WhenUnParked_ShouldReturnTrue() throws ParkingLotException{
-            parkingLotSystem.park(vehicle);
-            parkingLotSystem.unPark(vehicle);
-            boolean isUnParked = parkingLotSystem.isVehicleUnParked(vehicle);
-            assertTrue(isUnParked);
+    public void givenAVehicle_WhenUnParked_ShouldReturnTrue() throws ParkingLotException {
+        parkingLotSystem.park(vehicle);
+        parkingLotSystem.unPark(vehicle);
+        boolean isUnParked = parkingLotSystem.isVehicleUnParked(vehicle);
+        assertTrue(isUnParked);
     }
 
     @Test
@@ -119,10 +118,12 @@ public class ParkingLotSystemTest {
     @Test
     public void givenVehicle_WhenParked_ShouldReturnSlotNo() throws ParkingLotException {
         parkingLotSystem.setCapacity(2);
-        Object vehicle2 = new Object();
+        Driver driver = new Driver();
         parkingLotSystem.park(vehicle);
+        Object vehicle2 = new Object();
         parkingLotSystem.park(vehicle2);
-        int slotNum = parkingLotSystem.searchVehicle(vehicle2);
+        parkingLotSystem.searchVehicle(vehicle2);
+        int slotNum = driver.showSlot();
         assertEquals(1, slotNum);
     }
 }

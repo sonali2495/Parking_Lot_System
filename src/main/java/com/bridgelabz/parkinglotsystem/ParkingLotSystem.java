@@ -1,15 +1,18 @@
 package com.bridgelabz.parkinglotsystem;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/***********************************************************
  * Purpose: To Simulate With Parking Lot Problem.
  *
  * @author Sonali G
  * @version 1.0
  * @since 23-11-2021
- */
+ ************************************************************/
+
 public class ParkingLotSystem {
     private static List<ParkingSlot> vehicles;
     private static List<ParkingLotObserver> observers;
@@ -22,43 +25,74 @@ public class ParkingLotSystem {
     }
 
     /**
-     * Purpose To Add Observer In List
+     * Purpose: To Add Observer In List
      *
-     * @param observer Given Observer as a Parameter
+     * @param observer Given Observer as a Parameter to add into the list
      */
     public void registerParkingLotObserver(ParkingLotObserver observer) {
         this.observers.add(observer);
     }
 
     /**
-     * Purpose To set the capacity
+     * Purpose To set the capacity for parking slot
      *
-     * @param capacity given Parameter as Capacity
+     * @param capacity given Parameter as slot Capacity
      */
     public void setCapacity(int capacity) {
         this.actualCapacity = capacity;
     }
 
     /**
-     * Purpose To Park Given Vehicle
+     * Purpose: To get the time of the vehicle
+     *
+     * @return formatted date
+     */
+    public String getTime() {
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = myDateObj.format(formatTime);
+        return formattedDate;
+    }
+
+    /**
+     * Purpose: To Park Given Vehicle
      *
      * @param vehicle given vehicle as parameter
      * @return True if Vehicle Parked
      */
-    public void park(Object vehicle, String time) throws ParkingLotException {
-        if (this.vehicles.size() == this.actualCapacity) {
+    public void park(Object vehicle) throws ParkingLotException {
+        if (isVehicleParked(vehicle))
+            throw new ParkingLotException
+                    (ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED, "Vehicle Already Parked");
+        ParkingSlot parkingSlot = new ParkingSlot(vehicle, getTime());
+        this.vehicles.add(parkingSlot);
+
+        if (this.vehicles.size() - 1 == this.actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
             }
-            throw new ParkingLotException("Parking Lot is Full!");
+            throw new ParkingLotException
+                    (ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL, "Parking Lot is Full");
         }
-        if (isVehicleParked(vehicle)) throw new ParkingLotException("Vehicle Already Parked!");
-        ParkingSlot parkingSlot = new ParkingSlot(vehicle, time);
-        this.vehicles.add(parkingSlot);
     }
 
     /**
-     * Purpose: To check given vehicle is parked to unpark it
+     * Purpose To Check a Vehicle is Parked Or Not
+     *
+     * @param vehicle given Vehicle To check if it is parked
+     * @return If Vehicle contains vehicle
+     * it will return True
+     */
+    public boolean isVehicleParked(Object vehicle) {
+        for (ParkingSlot slot : vehicles) {
+            if (slot.getVehicle().equals(vehicle))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Purpose: To check given vehicle is unparked or not
      *
      * @param vehicle
      * @return True for vehicle unparked
@@ -74,22 +108,7 @@ public class ParkingLotSystem {
                 return true;
             }
         }
-        throw new ParkingLotException("No Such Vehicle found");
-    }
-
-    /**
-     * Purpose To Check a Vehicle is Parked Or Not
-     *
-     * @param vehicle given Vehicle
-     * @return If Vehicle contains vehicle
-     * it will return True
-     */
-    public boolean isVehicleParked(Object vehicle) {
-        for (ParkingSlot slot : vehicles) {
-            if (slot.getVehicle().equals(vehicle))
-                return true;
-        }
-        return false;
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "No Such Vehicle found");
     }
 
     /**
@@ -99,7 +118,8 @@ public class ParkingLotSystem {
      * @return Vehicle Equal to null -> Vehicle is UnParked and return True
      */
     public boolean isVehicleUnParked(Object vehicle) throws ParkingLotException {
-        if (vehicle == null) throw new ParkingLotException("No Such Vehicle found");
+        if (vehicle == null)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "No Such Vehicle found");
         if (this.vehicles.contains(vehicle))
             return false;
         return true;
@@ -117,7 +137,7 @@ public class ParkingLotSystem {
             if (slot.getVehicle().equals(vehicle))
                 return vehicles.indexOf(slot);
         }
-        throw new ParkingLotException("No Such Vehicle Found");
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "No Such Vehicle Found");
     }
 
     /**
@@ -132,6 +152,6 @@ public class ParkingLotSystem {
             if (slot.getVehicle().equals(vehicle))
                 return slot.getTime();
         }
-        throw new ParkingLotException("No Such Vehicle Found");
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "No Such Vehicle Found");
     }
 }

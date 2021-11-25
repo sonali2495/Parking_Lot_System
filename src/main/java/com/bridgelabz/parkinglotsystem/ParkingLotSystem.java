@@ -71,10 +71,12 @@ public class ParkingLotSystem {
         checkCapacity();
 
         ParkingSlot parkingSlot = new ParkingSlot(numberPlate, vehicle, vehicleColour, getDateTime());
-        if (parkingLot1.size() > parkingLot2.size()) {
-            this.parkingLot2.add(parkingSlot);
-        } else
-            this.parkingLot1.add(parkingSlot);
+        if (police.checkNumberPlate(numberPlate)) {
+            if (parkingLot1.size() > parkingLot2.size())
+                this.parkingLot2.add(parkingSlot);
+            else
+                this.parkingLot1.add(parkingSlot);
+        }
 
         checkSuspiciousVehicle(parkingSlot, vehicle);
     }

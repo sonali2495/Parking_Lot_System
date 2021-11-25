@@ -116,7 +116,7 @@ public class ParkingLotSystemTest {
     @Test
     public void givenWhiteVehicle_WhenParked_ShouldInformPoliceDepartment() throws ParkingLotException {
         parkingLotSystem.setCapacity(2);
-        parkingLotSystem.park("MH04 0001", "vehicle", "White");
+        parkingLotSystem.park("MH04 AE0001", "vehicle", "White");
         int slotNo = parkingLotSystem.searchVehicle("vehicle");
         boolean isVehicleAdded = Police.isVehicleAdded(slotNo);
         assertTrue(isVehicleAdded);
@@ -139,5 +139,19 @@ public class ParkingLotSystemTest {
         int slotNo = parkingLotSystem.searchVehicle("BMW");
         boolean isVehicleAdded = Police.isVehicleAdded(slotNo);
         assertTrue(isVehicleAdded);
+    }
+
+    @Test
+    public void givenVehicle_WhenNumberPlateIsCorrect_ShouldReturnTrue() {
+        parkingLotSystem.setCapacity(1);
+        boolean checkNumberPlate = Police.checkNumberPlate("MH04 AB7814");
+        assertTrue(checkNumberPlate);
+    }
+
+    @Test
+    public void givenVehicle_WhenNumberPlateIsIncorrect_ShouldReturnFalse() {
+        parkingLotSystem.setCapacity(1);
+        boolean checkNumberPlate = Police.checkNumberPlate("04MH 7814");
+        assertFalse(checkNumberPlate);
     }
 }

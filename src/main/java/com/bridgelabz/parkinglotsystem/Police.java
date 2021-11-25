@@ -1,6 +1,8 @@
 package com.bridgelabz.parkinglotsystem;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /******************************************************************************
  *  Purpose To add Suspicious Vehicle in List So Police Can Investigate
@@ -18,6 +20,12 @@ public class Police {
 
     public static boolean isVehicleAdded(int slotNumber) {
         return suspiciousVehicles.containsKey(slotNumber);
+    }
+
+    public static boolean checkNumberPlate(String vehicleNumberPlate) {
+        Pattern pattern = Pattern.compile("^[A-Z]{2}[0-9]{2}[ ][A-Z]{2}[0-9]{4,}$");
+        Matcher matcher = pattern.matcher(vehicleNumberPlate);
+        return matcher.matches();
     }
 
     public void addInSuspiciousVehicles(int slotNo, ParkingSlot parkingSlot) {

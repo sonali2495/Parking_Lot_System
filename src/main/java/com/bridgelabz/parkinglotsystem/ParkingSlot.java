@@ -26,6 +26,10 @@ public class ParkingSlot {
         return vehicleColour;
     }
 
+    public String getNumberPlate() {
+        return numberPlate;
+    }
+
     public String getTime() {
         return time;
     }

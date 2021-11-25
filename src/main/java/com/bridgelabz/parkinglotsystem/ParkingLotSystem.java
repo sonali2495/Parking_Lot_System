@@ -86,7 +86,7 @@ public class ParkingLotSystem {
      * @param vehicle     given vehicle For Check it's Suspicious Vehicle or not
      */
     private void checkSuspiciousVehicle(ParkingSlot parkingSlot, String vehicle) throws ParkingLotException {
-        if (parkingSlot.getVehicleColour() == "White")
+        if (parkingSlot.getVehicleColour() == "White" || parkingSlot.getVehicle() == "BMW")
             police.addInSuspiciousVehicles(searchVehicle(vehicle), parkingSlot);
         if (parkingSlot.getVehicleColour() == "Blue" && parkingSlot.getVehicle() == "Toyota") {
             police.addInSuspiciousVehicles(searchVehicle(vehicle), parkingSlot);

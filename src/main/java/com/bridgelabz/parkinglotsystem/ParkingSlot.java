@@ -6,16 +6,16 @@ package com.bridgelabz.parkinglotsystem;
  *  @since 24-11-2021
  ******************************************************************************/
 public class ParkingSlot {
-    private final Object vehicle;
+    private final String vehicle;
     private final String time;
     private final String vehicleColour;
-    private final PersonType personType;
+    private final String numberPlate;
 
-    public ParkingSlot(Object vehicle, String vehicleColour, PersonType personType, String time) {
+    public ParkingSlot(String numberPlate, String vehicle, String vehicleColour, String time) {
+        this.numberPlate = numberPlate;
         this.vehicle = vehicle;
         this.vehicleColour = vehicleColour;
         this.time = time;
-        this.personType = personType;
     }
 
     public Object getVehicle() {
@@ -30,13 +30,6 @@ public class ParkingSlot {
         return time;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ParkingSlot parkingSlot1 = (ParkingSlot) o;
-        return vehicle.equals(parkingSlot1.vehicle) && time.equals(parkingSlot1.time);
-    }
 
     @Override
     public String toString() {

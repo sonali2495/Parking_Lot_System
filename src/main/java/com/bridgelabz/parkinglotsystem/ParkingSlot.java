@@ -29,4 +29,12 @@ public class ParkingSlot {
         ParkingSlot parkingSlot1 = (ParkingSlot) o;
         return vehicle.equals(parkingSlot1.vehicle) && time.equals(parkingSlot1.time);
     }
+
+    @Override
+    public String toString() {
+        return "ParkingSlot{" +
+                "vehicle=" + vehicle +
+                ", time='" + time + '\'' +
+                '}';
+    }
 }

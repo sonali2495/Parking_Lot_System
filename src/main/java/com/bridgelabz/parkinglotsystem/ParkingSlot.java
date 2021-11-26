@@ -11,7 +11,7 @@ public class ParkingSlot {
     private final String vehicleColour;
     private final String numberPlate;
 
-    public ParkingSlot(String numberPlate, String vehicle, String vehicleColour, String time) {
+    public ParkingSlot(String numberPlate, String vehicle, String vehicleColour, VehicleType vehicleType, String time) {
         this.numberPlate = numberPlate;
         this.vehicle = vehicle;
         this.vehicleColour = vehicleColour;

@@ -62,15 +62,15 @@ public class ParkingLotSystem {
      * Purpose: To Park Given Vehicle
      *
      * @param vehicle given vehicle as parameter
-     * @return True if Vehicle Parked
+     * @param vehicleType to define Vehicle'Size
      */
-    public void park(String numberPlate, String vehicle, String vehicleColour) throws ParkingLotException {
+    public void park(String numberPlate, String vehicle, String vehicleColour, VehicleType vehicleType) throws ParkingLotException {
         if (isVehicleParked(vehicle))
             throw new ParkingLotException
                     (ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED, "Vehicle Already Parked");
         checkCapacity();
 
-        ParkingSlot parkingSlot = new ParkingSlot(numberPlate, vehicle, vehicleColour, getDateTime());
+        ParkingSlot parkingSlot = new ParkingSlot(numberPlate, vehicle, vehicleColour, vehicleType, getDateTime());
         if (police.checkNumberPlate(numberPlate)) {
             if (parkingLot1.size() > parkingLot2.size())
                 this.parkingLot2.add(parkingSlot);
@@ -117,7 +117,7 @@ public class ParkingLotSystem {
      * @return If Vehicle contains vehicle
      * it will return True
      */
-    public boolean isVehicleParked(Object vehicle) {
+    public boolean isVehicleParked(String vehicle) {
         for (ParkingSlot slot : parkingLot1) {
             if (slot.getVehicle().equals(vehicle))
                 return true;

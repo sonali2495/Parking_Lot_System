@@ -11,6 +11,7 @@ public class ParkingLotAttendant {
     ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
 
     public void parkVehicle(String vehicleNumber, String vehicle, String vehicleColour) throws ParkingLotException {
-        parkingLotSystem.park(vehicleNumber, vehicle, vehicleColour);
+        parkingLotSystem.park(vehicleNumber, vehicle, vehicleColour, VehicleType.LARGE);
+
     }
 }

@@ -10,12 +10,14 @@ public class ParkingSlot {
     private final String time;
     private final String vehicleColour;
     private final String numberPlate;
+    private final VehicleType vehicleType;
 
     public ParkingSlot(String numberPlate, String vehicle, String vehicleColour, VehicleType vehicleType, String time) {
         this.numberPlate = numberPlate;
         this.vehicle = vehicle;
         this.vehicleColour = vehicleColour;
         this.time = time;
+        this.vehicleType = vehicleType;
     }
 
     public Object getVehicle() {
@@ -24,10 +26,6 @@ public class ParkingSlot {
 
     public String getVehicleColour() {
         return vehicleColour;
-    }
-
-    public String getNumberPlate() {
-        return numberPlate;
     }
 
     public String getTime() {
@@ -42,4 +40,6 @@ public class ParkingSlot {
                 ", time='" + time + '\'' +
                 '}';
     }
+
+    public enum VehicleType {LARGE, NORMAL}
 }

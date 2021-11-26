@@ -23,7 +23,7 @@ public class Police {
     }
 
     public static boolean checkNumberPlate(String vehicleNumberPlate) {
-        Pattern pattern = Pattern.compile("^[A-Z]{2}[0-9]{2}[ ][A-Z]{2}[0-9]{4,}$");
+        Pattern pattern = Pattern.compile("^[A-Z]{2}[0-9]{2}[ ][A-Z]{2}[0-9]{4}$");
         Matcher matcher = pattern.matcher(vehicleNumberPlate);
         return matcher.matches();
     }

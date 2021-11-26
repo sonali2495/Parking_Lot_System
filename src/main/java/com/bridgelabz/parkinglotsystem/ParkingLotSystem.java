@@ -19,6 +19,7 @@ public class ParkingLotSystem {
     private static List<ParkingLotObserver> observers;
     private static int actualCapacity;
     private static Police police;
+    private static ParkingSlot parkingSlot;
 
     public ParkingLotSystem() {
         this.parkingLot1 = new ArrayList();
@@ -61,37 +62,97 @@ public class ParkingLotSystem {
     /**
      * Purpose: To Park Given Vehicle
      *
-     * @param vehicle given vehicle as parameter
+     * @param vehicle     given vehicle as parameter
      * @param vehicleType to define Vehicle'Size
      */
-    public void park(String numberPlate, String vehicle, String vehicleColour, VehicleType vehicleType) throws ParkingLotException {
+    public void park(String numberPlate, String vehicle, String vehicleColour,
+                     ParkingSlot.VehicleType vehicleType) throws ParkingLotException {
         if (isVehicleParked(vehicle))
             throw new ParkingLotException
                     (ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED, "Vehicle Already Parked");
         checkCapacity();
 
-        ParkingSlot parkingSlot = new ParkingSlot(numberPlate, vehicle, vehicleColour, vehicleType, getDateTime());
+        parkingSlot = new ParkingSlot(numberPlate, vehicle, vehicleColour, vehicleType, getDateTime());
         if (police.checkNumberPlate(numberPlate)) {
             if (parkingLot1.size() > parkingLot2.size())
                 this.parkingLot2.add(parkingSlot);
             else
                 this.parkingLot1.add(parkingSlot);
         }
-
-        checkSuspiciousVehicle(parkingSlot, vehicle);
     }
 
     /**
-     * Purpose To add Suspicious Vehicle In List
+     * Purpose Check Suspicious Vehicle and Inform Police
      *
-     * @param parkingSlot given parkingSlot For Check it's Suspicious or not
-     * @param vehicle     given vehicle For Check it's Suspicious Vehicle or not
+     * @param carName given Vehicle as Parameter for Checking Suspicious Vehicle or Not
+     * @throws ParkingLotException If Vehicle Not Found Throwing Exception
      */
-    private void checkSuspiciousVehicle(ParkingSlot parkingSlot, String vehicle) throws ParkingLotException {
-        if (parkingSlot.getVehicleColour() == "White" || parkingSlot.getVehicle() == "BMW")
-            police.addInSuspiciousVehicles(searchVehicle(vehicle), parkingSlot);
-        if (parkingSlot.getVehicleColour() == "Blue" && parkingSlot.getVehicle() == "Toyota") {
-            police.addInSuspiciousVehicles(searchVehicle(vehicle), parkingSlot);
+    public void checkSuspiciousVehicle(String carName) throws ParkingLotException {
+        for (ParkingSlot slot : parkingLot1) {
+            if (slot.getVehicle().equals(carName)) {
+                police.addInSuspiciousVehicles(searchVehicle(carName), parkingSlot);
+            }
+            if (slot.getVehicle().equals(carName)) {
+                police.addInSuspiciousVehicles(searchVehicle(carName), parkingSlot);
+            }
+        }
+        for (ParkingSlot slot : parkingLot2) {
+            if (slot.getVehicle().equals(carName)) {
+                police.addInSuspiciousVehicles(searchVehicle(carName), parkingSlot);
+            }
+            if (slot.getVehicle().equals(carName)) {
+                police.addInSuspiciousVehicles(searchVehicle(carName), parkingSlot);
+            }
+        }
+    }
+    /**
+     * Purpose To Check Suspicious Vehicle By Colour and Inform Police
+     *
+     * @param vehicleColour for Checking Suspicious Vehicle By Colour
+     * @throws ParkingLotException If Vehicle Colour Not Matches Throw Exception
+     */
+    public void checkSuspiciousVehicleByColour(String vehicleColour) throws ParkingLotException {
+        for (ParkingSlot slot : parkingLot1) {
+            if (slot.getVehicleColour().equals(vehicleColour)) {
+                police.addInSuspiciousVehicles(searchVehicleByColour(vehicleColour), parkingSlot);
+            }
+            if (slot.getVehicleColour().equals(vehicleColour)) {
+                police.addInSuspiciousVehicles(searchVehicleByColour(vehicleColour), parkingSlot);
+            }
+        }
+        for (ParkingSlot slot : parkingLot2) {
+            if (slot.getVehicleColour().equals(vehicleColour)) {
+                police.addInSuspiciousVehicles(searchVehicleByColour(vehicleColour), parkingSlot);
+            }
+            if (slot.getVehicleColour().equals(vehicleColour)) {
+                police.addInSuspiciousVehicles(searchVehicleByColour(vehicleColour), parkingSlot);
+            }
+        }
+    }
+
+    /**
+     * Purpose To Check Suspicious Vehicle By VehicleName and Vehicle Colour
+     *
+     * @param vehicleName   for Check Suspicious Vehicle
+     * @param vehicleColour for Check Suspicious Vehicle By Colour
+     * @throws ParkingLotException If Vehicle Not Found Throw Exception
+     */
+    public void checkSuspiciousVehicle(String vehicleName, String vehicleColour) throws ParkingLotException {
+        for (ParkingSlot slot : parkingLot1) {
+            if (slot.getVehicleColour().equals(vehicleColour) && slot.getVehicle().equals(vehicleName)) {
+                police.addInSuspiciousVehicles(searchVehicle(vehicleName), parkingSlot);
+            }
+            if (slot.getVehicleColour().equals(vehicleColour) && slot.getVehicle().equals(vehicleName)) {
+                police.addInSuspiciousVehicles(searchVehicle(vehicleName), parkingSlot);
+            }
+        }
+        for (ParkingSlot slot : parkingLot2) {
+            if (slot.getVehicleColour().equals(vehicleColour) && slot.getVehicle().equals(vehicleName)) {
+                police.addInSuspiciousVehicles(searchVehicle(vehicleName), parkingSlot);
+            }
+            if (slot.getVehicleColour().equals(vehicleColour) && slot.getVehicle().equals(vehicleName)) {
+                police.addInSuspiciousVehicles(searchVehicle(vehicleName), parkingSlot);
+            }
         }
     }
 
@@ -192,6 +253,18 @@ public class ParkingLotSystem {
         }
         for (ParkingSlot slot : parkingLot2) {
             if (slot.getVehicle().equals(vehicle))
+                return parkingLot2.indexOf(slot);
+        }
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "No Such Vehicle Found");
+    }
+
+    private int searchVehicleByColour(String vehicleColour) throws ParkingLotException {
+        for (ParkingSlot slot : parkingLot1) {
+            if (slot.getVehicleColour().equals(vehicleColour))
+                return parkingLot1.indexOf(slot);
+        }
+        for (ParkingSlot slot : parkingLot2) {
+            if (slot.getVehicleColour().equals(vehicleColour))
                 return parkingLot2.indexOf(slot);
         }
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "No Such Vehicle Found");
